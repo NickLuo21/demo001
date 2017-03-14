@@ -16,10 +16,23 @@
         <resteasy-embeded.version>3.1.1.Final</resteasy-embeded.version>
         <springframework.version>4.3.7.RELEASE</springframework.version>
         <hibernate.version>5.2.2.Final</hibernate.version>
+        <swagger.version>1.5.12</swagger.version>
         <!--<daemon.main.class></daemon.main.class>-->
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-jaxrs</artifactId>
+            <version>${swagger.version}</version>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>javax.ws.rs</groupId>
+                    <artifactId>jsr311-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -92,6 +105,72 @@
             <version>5.1.6</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.github.kongchen</groupId>
+                <artifactId>swagger-maven-plugin</artifactId>
+                <version>3.1.2</version>
+                <configuration>
+                    <apiSources>
+                        <apiSource>
+                            <springmvc>false</springmvc>
+                            <locations>com.nick.restful</locations>
+                            <schemes>http,https</schemes>
+                            <host>localhost:8080</host>
+                            <basePath>/</basePath>
+                            <info>
+                                <title>Swagger spec for our REST API</title>
+                                <version>v1</version>
+                                <description>This is a sample spec for our REST API</description>
+                                <termsOfService>
+                                    http://www.testcompany.com/terms-and-conditions
+                                </termsOfService>
+                                <contact>
+                                    <email>nick.luo21@gmail.com</email>
+                                    <name>Nick Luo</name>
+                                    <!--<url>http://www.testcompany.com</url>-->
+                                </contact>
+                                <!--<license>
+                                    <url>http://www.testcompany.com/licenses/LICENSE-2.0.html</url>
+                                    <name>Company Licence</name>
+                                </license>-->
+                            </info>
+                            <swaggerDirectory>src/main/webapp/</swaggerDirectory>
+                        </apiSource>
+                    </apiSources>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>io.github.robwin</groupId>
+                <artifactId>swagger2markup-maven-plugin</artifactId>
+                <version>0.9.3</version>
+                <configuration>
+                    <inputDirectory>src/main/webapp/</inputDirectory>
+                    <swaggerFile>swagger.json</swaggerFile>
+                    <outputDirectory>asciidoc</outputDirectory>
+                    <markupLanguage>asciidoc</markupLanguage>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>process-swagger</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
     <profiles>
         <profile>

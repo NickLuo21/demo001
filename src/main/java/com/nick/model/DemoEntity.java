@@ -1,5 +1,8 @@
 package com.nick.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -9,6 +12,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "DemoEntity")
 @NamedQuery(name="DemoEntity.findAll", query="SELECT e FROM DemoEntity e")
+@ApiModel
 public class DemoEntity implements Serializable{
     @Id
     @Column(name = "ENTITY_ID")
@@ -18,6 +22,7 @@ public class DemoEntity implements Serializable{
     @Column(name = "ENTITY_COMMENT")
     private String comment;
 
+    @ApiModelProperty(position = 1, required = true, value = "User ID")
     public Long getId() {
         return id;
     }
@@ -26,6 +31,7 @@ public class DemoEntity implements Serializable{
         this.id = id;
     }
 
+    @ApiModelProperty(position = 2, required = true, value = "username containing only lowercase letters")
     public String getName() {
         return name;
     }
@@ -34,6 +40,7 @@ public class DemoEntity implements Serializable{
         this.name = name;
     }
 
+    @ApiModelProperty(position = 3, required = true)
     public String getComment() {
         return comment;
     }
